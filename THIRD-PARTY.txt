@@ -1,0 +1,28 @@
+Il2CppInterop.Runtime (modified), LGPL-3.0-only
+Copyright its contributors: https://github.com/BepInEx/Il2CppInterop
+Compatibility base: https://github.com/XLG-WSM/Il2CppInterop
+Commit bb2e0a008790c608d0dd53a1569ae04e290d6be1 (Unity 6000.5 support / PR 285).
+The full modified source is included in third-party/Il2CppInterop-modified-source.zip.
+The Class_6000_5 layout was adapted from Class_104_0 in ds5678/v2-rewrite:
+static_fields 0xa0, cctor_finished 0xe4, vtable 0x138.
+The original xref and injection compatibility fixes are retained.
+Users may modify, rebuild and replace this separate DLL. No restrictions are imposed on debugging such modifications.
+License: third-party/Il2CppInterop-LGPL3.txt (includes GPL text).
+
+TerraFX.Interop.Windows 10.0.22621.2, MIT
+Copyright Tanner Gooding and contributors.
+https://github.com/terrafx/terrafx.interop.windows
+License: third-party/TerraFX-MIT.txt.
+
+BepInEx 6.0.0-be.788 (5b766a3), LGPL-2.1
+Downloaded separately by the installer from the official BepInEx build service.
+Source: https://github.com/BepInEx/BepInEx/tree/5b766a3b7f6c164d4798924a93f3acf4db769d06
+License reference: third-party/BepInEx-LGPL2.1.txt.
+The loader archive includes its own third-party dependencies; it is not embedded in this Workshop package.
+
+Generated interop assemblies in payload/BepInEx/interop
+These are automatically generated API bindings for the exact supported game build,
+created with Cpp2IL development b5ad444b82267cb1e4b88b8b373c008105bdea52 and Il2CppInterop.
+They call into the user's installed IL2CPP game and are not replacement game executables or game assets.
+API names belong to their respective authors (Neurona Games, Unity Technologies and other component authors).
+No GameAssembly.dll, original managed game implementation, save files or media assets are distributed.

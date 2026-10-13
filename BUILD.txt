@@ -1,0 +1,38 @@
+Dual Roster 0.3.0 — source build
+
+Русский: установите совместимый Workshop-пакет и .NET SDK 10.
+Запустите Build.ps1 -GamePath '<папка игры>'. Результат находится в build/.
+Скрипт не меняет установленный мод. Игровые сборки и сохранения в исходники не включены.
+
+English: install the supported Workshop package and .NET SDK 10.
+Run Build.ps1 -GamePath '<game folder>'. Both production DLLs are written to build/.
+The script only builds; it does not install its output. No game binaries or saves are included.
+
+Manual builds:
+dotnet build src/DualRoster.csproj -c Release -p:BepInExRoot=<game>/BepInEx -p:InteropRoot=<game>/BepInEx/interop
+dotnet build loader/DualRoster.Workshop.csproj -c Release -p:BepInExRoot=<game>/BepInEx -p:InteropRoot=<game>/BepInEx/interop
+dotnet run --project tests/WorkshopChecks.csproj -c Release
+
+The production build excludes all integration harnesses. TestBuild=true enables them.
+Use ONLY a separate game and Save directory with a .dualroster-test-copy marker.
+DUALROSTER_TEST_SAVE points at that copy; the integration harness modifies it.
+Adapt the test slot in RosterPanel.cs to your own fixture. User career files are not distributed.
+The test Workshop loader also requires the marker; fixture overrides are absent from production.
+
+Package layout:
+payload/ holds one-time loader and compatibility files installed into the game.
+runtime/DualRoster.dll is gameplay code, loaded from Workshop into a verified per-hash cache.
+runtime/workshop-loader.json declares loader API, compatibility ID, item ID, version and SHA256.
+When making a gameplay release, rebuild the DLL and update its SHA256 in that manifest.
+Regenerate payload-manifest.json if one-time installation files change.
+The installer files in this source archive require the full Workshop package to run.
+
+Modified Il2CppInterop.Runtime (LGPL-3.0-only):
+Extract third-party/Il2CppInterop-modified-source.zip (source/Il2CppInterop-modified-source.zip in older packages).
+Install .NET SDK 8, or adjust global.json for SDK 10.
+Place the installed BepInEx/interop/Il2Cppmscorlib.dll in Il2CppInterop.Runtime/Libs/Il2Cppmscorlib.dll.
+Run dotnet build Il2CppInterop.Runtime/Il2CppInterop.Runtime.csproj -c Release.
+NuGet restores the declared dependencies. The class-layout modification is in
+Il2CppInterop.Runtime/Runtime/VersionSpecific/Class/Class_6000_5.cs.
+Replace the separate BepInEx/core/Il2CppInterop.Runtime.dll with your rebuilt library to use it.
+Keep TerraFX.Interop.Windows.dll available alongside it. The plugin does not authenticate or lock this library.

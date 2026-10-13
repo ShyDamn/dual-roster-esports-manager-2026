@@ -1,0 +1,19 @@
+Dual Roster 0.3.0 beta — validation, 2026-10-13
+Target: Windows x64, Steam build 25869291, Unity 6000.5.10f1.
+
+119 automated assertions passed:
+- 62 registration, invitation and refusal assertions in the actual IL2CPP game.
+- 35 finance and sticker dashboard assertions in the actual IL2CPP game.
+- 22 independent Workshop package and download-state checks.
+Runtime tests used isolated copies of the game/save storage; no user career files are distributed.
+
+Invitation checks include both roster orders, repeat clicks, closed events, save/load,
+third-button click, closing both letters without entry, persistent refusal, preserving
+an existing roster entry, and restoring the normal footer for other email types.
+The Digital Goods checks exercise both selector buttons, academy totals, remaining
+sales, actual academy autograph nicknames, switching back, and unchanged budgets.
+Loader smoke checks cover ready content, cached-but-unsubscribed content, pending
+updates and the real Steam subscription API. Production builds exclude test harnesses.
+The installer was checked on an existing 0.2.0 setup, including backup/removal of the
+old DLL, the new loader files and checksum verification.
+Multi-season behavior and arbitrary other mod combinations remain untested.

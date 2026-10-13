@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>DualRoster.Workshop</AssemblyName>
+    <Version>0.3.0</Version>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <DefineConstants Condition="'$(TestBuild)' == 'true'">$(DefineConstants);DUALROSTER_TESTING</DefineConstants>
+    <ToolRoot Condition="'$(ToolRoot)' == ''">../../../work/tools</ToolRoot>
+    <BepInExRoot Condition="'$(BepInExRoot)' == ''">$(ToolRoot)/bepinex-788/BepInEx</BepInExRoot>
+    <InteropRoot Condition="'$(InteropRoot)' == ''">../../../work/analysis/interop</InteropRoot>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="$(BepInExRoot)/core/BepInEx.Core.dll" Private="false" />
+    <Reference Include="$(BepInExRoot)/core/BepInEx.Unity.IL2CPP.dll" Private="false" />
+    <Reference Include="$(BepInExRoot)/core/Il2CppInterop.Runtime.dll" Private="false" />
+    <Reference Include="$(BepInExRoot)/core/0Harmony.dll" Private="false" />
+    <Reference Include="$(InteropRoot)/EsportsManager.dll" Private="false" />
+    <Reference Include="$(InteropRoot)/Facepunch.Steamworks.Win64.dll" Private="false" />
+    <Reference Include="$(InteropRoot)/Il2Cppmscorlib.dll" Private="false" />
+    <Reference Include="$(InteropRoot)/UnityEngine.CoreModule.dll" Private="false" />
+    <Reference Include="$(InteropRoot)/UnityEngine.UI.dll" Private="false" />
+    <Reference Include="$(InteropRoot)/UnityEngine.UIModule.dll" Private="false" />
+    <Reference Include="$(InteropRoot)/Unity.TextMeshPro.dll" Private="false" />
+  </ItemGroup>
+</Project>

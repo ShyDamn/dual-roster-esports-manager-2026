@@ -1,0 +1,11 @@
+**/bin/
+**/obj/
+build/
+.vs/
+*.user
+*.log
+*.dll
+*.pdb
+*.exe
+Save/
+.dualroster-test-copy
