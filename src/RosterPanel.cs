@@ -16,6 +16,7 @@ public sealed class RosterPanel : MonoBehaviour
 #if DUALROSTER_TESTING
     private bool _tested;
     private bool _testLoading;
+    private float _testDiagnosticAt;
 #endif
     private float _nextRefresh;
 
@@ -45,7 +46,12 @@ public sealed class RosterPanel : MonoBehaviour
         if (Plugin.TestMode && !_testLoading)
         {
             var menu = UnityEngine.Object.FindObjectOfType<MainMenuInitializer>();
-            if (menu != null && menu.IsBootstrapped)
+            if (Time.unscaledTime >= _testDiagnosticAt)
+            {
+                _testDiagnosticAt = Time.unscaledTime + 10;
+                Plugin.Logger.LogInfo($"TEST startup: menu={(menu != null)}, bootstrapped={menu?.IsBootstrapped}, importing={ImportQueue.IsReimporting}, handover={WorldHandover.InProgress}, time={Time.unscaledTime}");
+            }
+            if (menu != null && menu.IsBootstrapped && !ImportQueue.IsReimporting && !WorldHandover.InProgress)
             {
                 _testLoading = true;
                 menu.LoadSave("86719");

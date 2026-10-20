@@ -9,11 +9,11 @@ using TeamSet = Il2CppSystem.Collections.Generic.HashSet<string>;
 
 namespace DualRoster;
 
-[BepInPlugin(Id, "Dual Roster", "0.3.0")]
+[BepInPlugin(Id, "Dual Roster", "0.3.1")]
 public sealed class Plugin : BasePlugin
 {
     public const string Id = "local.dualroster.em2026";
-    public const string SupportedHash = "A4D500C32CC3FB5457ADCE6089ADD87165706732BAB96CDAB4FEC97AE32A78AA";
+    public const string SupportedHash = "F915DE7BD84B5C8D52D73789500BFC74E0108920EBE5FBABFCE1FC1DD24D60F9";
     internal static ManualLogSource Logger = null!;
     internal static bool TestMode;
 
@@ -23,7 +23,7 @@ public sealed class Plugin : BasePlugin
         using var game = File.OpenRead(Path.Combine(Paths.GameRootPath, "GameAssembly.dll"));
         using var sha = SHA256.Create();
         if (Convert.ToHexString(sha.ComputeHash(game)) != SupportedHash)
-            throw new NotSupportedException("Dual Roster 0.3.0 requires Steam build 25869291. No gameplay patches applied.");
+            throw new NotSupportedException("Dual Roster 0.3.1 requires Steam build 26012398. No gameplay patches applied.");
 
         var testRoot = Environment.GetEnvironmentVariable("DUALROSTER_TEST_SAVE");
         if (!string.IsNullOrEmpty(testRoot))
@@ -40,7 +40,7 @@ public sealed class Plugin : BasePlugin
 
         new Harmony(Id).PatchAll(typeof(Plugin).Assembly);
         AddComponent<RosterPanel>();
-        Log.LogInfo("Dual Roster 0.3.0 loaded. Main and academy registration enabled for the player's club.");
+        Log.LogInfo("Dual Roster 0.3.1 loaded. Main and academy registration enabled for the player's club.");
     }
 }
 

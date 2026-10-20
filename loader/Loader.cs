@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace DualRoster.Workshop;
 
-[BepInPlugin("local.dualroster.workshop", "Dual Roster Workshop Loader", "0.3.0")]
+[BepInPlugin("local.dualroster.workshop", "Dual Roster Workshop Loader", "0.3.1")]
 public sealed class Loader : BasePlugin
 {
     internal const string GameplayId = "local.dualroster.em2026";
@@ -22,8 +22,9 @@ public sealed class Loader : BasePlugin
         using var stream = File.OpenRead(Path.Combine(Paths.GameRootPath, "GameAssembly.dll"));
         using var sha = SHA256.Create();
         if (Convert.ToHexString(sha.ComputeHash(stream)) != WorkshopPackage.GameHash)
-            throw new NotSupportedException("Workshop loader requires Steam build 25869291. Update the loader after a game update.");
+            throw new NotSupportedException("Workshop loader requires Steam build 26012398. Update the loader after a game update.");
 #if DUALROSTER_TESTING
+        Application.runInBackground = true;
         var testSave = Environment.GetEnvironmentVariable("DUALROSTER_TEST_SAVE");
         if (string.IsNullOrEmpty(testSave) || !File.Exists(Path.Combine(testSave, ".dualroster-test-copy")))
             throw new InvalidOperationException("Test loader requires an isolated save copy.");
@@ -40,6 +41,8 @@ public sealed class Loader : BasePlugin
     {
         // One final synchronous check before the game reads the career and runs its migrations.
         Poller?.TryLoad();
+        // The menu can reject early clicks while the updated game imports its database.
+        if (ImportQueue.IsReimporting || WorldHandover.InProgress) return;
         CareerStarted = true;
     }
 }

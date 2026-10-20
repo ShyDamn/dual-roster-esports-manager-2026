@@ -9,8 +9,8 @@ internal enum PackageState { Unsubscribed, WaitingForDownload, Ready }
 internal sealed class WorkshopPackage
 {
     internal const ulong ItemId = 3819071177;
-    internal const string GameHash = "A4D500C32CC3FB5457ADCE6089ADD87165706732BAB96CDAB4FEC97AE32A78AA";
-    internal const string Compatibility = "em2026-25869291-interop107-v1";
+    internal const string GameHash = "F915DE7BD84B5C8D52D73789500BFC74E0108920EBE5FBABFCE1FC1DD24D60F9";
+    internal const string Compatibility = "em2026-26012398-interop107-v1";
     public int Schema { get; set; }
     public int LoaderApi { get; set; }
     public ulong WorkshopId { get; set; }

@@ -14,14 +14,14 @@
 
 ### Установка
 
-Версия **0.3.0 beta**, Windows x64, **Steam build 25869291**. Интерфейс игрового мода на русском; инструкции на русском и английском.
+Версия **0.3.1 beta**, Windows x64, **Steam build 26012398**. Интерфейс игрового мода на русском; инструкции на русском и английском.
 
 1. Подпишитесь на мод в Workshop и дождитесь загрузки.
 2. Закройте игру и сделайте резервную копию карьеры.
 3. Откройте `SteamLibrary/steamapps/workshop/content/2749950/3819071177` и запустите `Install.cmd`.
-4. Запускайте игру через Steam. В главном меню дождитесь статуса `Dual Roster: 0.3.0 active / 0.3.0 включён`.
+4. Запускайте игру через Steam. В главном меню дождитесь статуса `Dual Roster: 0.3.1 active / 0.3.1 включён`.
 
-При переходе с 0.2.0 новый установщик тоже нужно запустить **один раз**. Он сохраняет старую DLL в резервной копии и заменяет её загрузчиком Workshop. При ошибке записи в папку игры запустите установщик от имени администратора.
+После обновления игры до build 26012398 запустите новый установщик **повторно**, в том числе при переходе с 0.3.0. Версия 0.3.1 обновляет привязки к игре и загрузчик. Старые файлы сохраняются в резервной копии. При ошибке записи в папку игры запустите установщик от имени администратора.
 
 После обновления самой игры может понадобиться новая версия загрузчика и повторная установка. Подписка без первоначальной установки загрузчика не запускает мод с кодом.
 
@@ -58,9 +58,9 @@ Dual Roster lets your club's main team and academy enter the same tournament. Bo
 
 ### Install and build
 
-**0.3.0 beta; Windows x64; Steam build 25869291 only. Gameplay UI is Russian.** Subscribe, wait for Steam, close the game, back up your career, and run `Install.cmd` from `SteamLibrary/steamapps/workshop/content/2749950/3819071177`. Launch normally through Steam and wait for the main-menu status to say `active` before opening a career.
+**0.3.1 beta; Windows x64; Steam build 26012398 only. Gameplay UI is Russian.** Subscribe, wait for Steam, close the game, back up your career, and run `Install.cmd` from `SteamLibrary/steamapps/workshop/content/2749950/3819071177`. Launch normally through Steam and wait for the main-menu status to say `active` before opening a career.
 
-Upgrading from 0.2.0 also requires running the new installer once. It backs up the old gameplay DLL and replaces it with the Workshop loader. If Windows denies write access, run as administrator. Updates to the game or loader compatibility components may require another installation.
+After the game update to build 26012398, rerun the new installer, including when upgrading from 0.3.0. Version 0.3.1 refreshes the generated game bindings and loader. Existing files are backed up. If Windows denies write access, run as administrator. Updates to the game or loader compatibility components may require another installation.
 
 To build, install the supported Workshop package and .NET SDK 10, then run `Build.ps1 -GamePath '<game directory>'`. The two production DLLs are written to `build/`; no game files are changed. Run `dotnet run --project tests/WorkshopChecks.csproj -c Release` for package checks. See `BUILD.txt` for dependency and runtime rebuild details.
 

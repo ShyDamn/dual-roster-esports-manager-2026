@@ -1,6 +1,6 @@
 param([string]$GamePath, [switch]$VerifyOnly, [string]$LoaderArchive)
 $ErrorActionPreference = 'Stop'
-$expectedGame = 'A4D500C32CC3FB5457ADCE6089ADD87165706732BAB96CDAB4FEC97AE32A78AA'
+$expectedGame = 'F915DE7BD84B5C8D52D73789500BFC74E0108920EBE5FBABFCE1FC1DD24D60F9'
 $expectedLoader = 'F4CC496BD098A0DF4164B81E3737297707F13A47C2478DBA2F60EEFAB784817A'
 $loaderUrl = 'https://builds.bepinex.dev/projects/bepinex_be/788/BepInEx-Unity.IL2CPP-win-x64-6.0.0-be.788%2B5b766a3.zip'
 
@@ -28,7 +28,7 @@ if (!$GamePath) {
 $GamePath = (Resolve-Path -LiteralPath $GamePath).Path
 $assembly = Inside $GamePath 'GameAssembly.dll'
 if (!(Test-Path -LiteralPath $assembly) -or (Get-FileHash -LiteralPath $assembly -Algorithm SHA256).Hash -ne $expectedGame) {
-    throw 'Unsupported game version. This release requires Steam build 25869291. No files were installed.'
+    throw 'Unsupported game version. This release requires Steam build 26012398. No files were installed.'
 }
 $manifest = Get-Content (Join-Path $PSScriptRoot 'payload-manifest.json') -Raw | ConvertFrom-Json
 foreach ($entry in $manifest) {
@@ -39,7 +39,7 @@ foreach ($entry in $manifest) {
 }
 $runtime = Get-Content (Join-Path $PSScriptRoot 'runtime\workshop-loader.json') -Raw | ConvertFrom-Json
 if ($runtime.Schema -ne 1 -or $runtime.LoaderApi -ne 1 -or $runtime.WorkshopId -ne 3819071177 -or
-    $runtime.CompatibilityId -ne 'em2026-25869291-interop107-v1' -or
+    $runtime.CompatibilityId -ne 'em2026-26012398-interop107-v1' -or
     (Get-FileHash -LiteralPath (Join-Path $PSScriptRoot 'runtime\DualRoster.dll')).Hash -ne $runtime.Sha256) {
     throw 'Workshop gameplay package verification failed.'
 }
@@ -124,7 +124,7 @@ try {
     }
     throw
 }
-Write-Host 'Dual Roster Workshop Loader 0.3.0 installed. Subscribe to item 3819071177 and start through Steam.'
+Write-Host 'Dual Roster Workshop Loader 0.3.1 installed. Subscribe to item 3819071177 and start through Steam.'
 Write-Host 'Ordinary mod updates now load automatically on the next game launch. The main menu shows status.'
 Write-Host "Original loader files backed up to: $backup"
 Write-Host 'Career saves were not changed. Keep a separate backup before playing with mods.'
