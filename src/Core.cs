@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
@@ -10,7 +10,7 @@ using TeamSet = Il2CppSystem.Collections.Generic.HashSet<string>;
 
 namespace DualRoster;
 
-[BepInPlugin(Id, "Dual Roster", "0.4.0")]
+[BepInPlugin(Id, "Dual Roster", "0.4.1")]
 public sealed class Plugin : BasePlugin
 {
     public const string Id = "local.dualroster.em2026";
@@ -25,7 +25,7 @@ public sealed class Plugin : BasePlugin
         using var game = File.OpenRead(Path.Combine(Paths.GameRootPath, "GameAssembly.dll"));
         using var sha = SHA256.Create();
         if (Convert.ToHexString(sha.ComputeHash(game)) != SupportedHash)
-            throw new NotSupportedException("Dual Roster 0.4.0 requires Steam build 26012398. No gameplay patches applied.");
+            throw new NotSupportedException("Dual Roster 0.4.1 requires Steam build 26012398. No gameplay patches applied.");
 
         var testRoot = Environment.GetEnvironmentVariable("DUALROSTER_TEST_SAVE");
         if (!string.IsNullOrEmpty(testRoot))
@@ -47,7 +47,7 @@ public sealed class Plugin : BasePlugin
         AddComponent<LongRunChecks>();
         AddComponent<UiPreviewChecks>();
 #endif
-        Log.LogInfo("Dual Roster 0.4.0 loaded. Main and academy registration enabled for the player's club.");
+        Log.LogInfo("Dual Roster 0.4.1 loaded. Main and academy registration enabled for the player's club.");
     }
 }
 

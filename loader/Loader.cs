@@ -1,4 +1,4 @@
-using BepInEx;
+﻿using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
@@ -8,7 +8,7 @@ using DualRoster.Shared;
 
 namespace DualRoster.Workshop;
 
-[BepInPlugin("local.dualroster.workshop", "Dual Roster Workshop Loader", "0.4.0")]
+[BepInPlugin("local.dualroster.workshop", "Dual Roster Workshop Loader", "0.4.1")]
 public sealed class Loader : BasePlugin
 {
     internal const string GameplayId = "local.dualroster.em2026";

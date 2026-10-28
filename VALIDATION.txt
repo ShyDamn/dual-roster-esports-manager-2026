@@ -1,4 +1,4 @@
-﻿Dual Roster 0.4.0 beta — validation, 2026-10-28
+﻿Dual Roster 0.4.1 beta — validation, 2026-10-28
 Windows x64; Steam build 26012398; Unity 6000.5.10f1.
 GameAssembly SHA256: F915DE7BD84B5C8D52D73789500BFC74E0108920EBE5FBABFCE1FC1DD24D60F9
 
@@ -6,7 +6,7 @@ GameAssembly SHA256: F915DE7BD84B5C8D52D73789500BFC74E0108920EBE5FBABFCE1FC1DD24
 Проверки выполнялись в отдельной копии игры с перенаправлением Save.
 Реальная карьера пользователя для тестов не менялась и не распространяется.
 
-223 автоматических проверки:
+225 автоматических проверки:
 - 62 регистрации, приглашения и отказы в настоящей IL2CPP-игре;
 - 35 финансов, поездок, призовых, наклеек и цифровых товаров;
 - 28 нового отчёта, точных причин отказа, переводов игрока и закрытия академии;
@@ -15,7 +15,8 @@ GameAssembly SHA256: F915DE7BD84B5C8D52D73789500BFC74E0108920EBE5FBABFCE1FC1DD24
 - 12 защиты открытия карьеры: ожидание, возврат и подтверждение без мода с копией;
 - 36 независимых проверок пакета, состояний Workshop, защиты и локализации;
 - 22 обновлятора в Windows PowerShell 5.1, включая откат после реальной перезаписи;
-- 8 установки и восстановления файлов полного релизного пакета.
+- 8 установки и восстановления файлов полного релизного пакета;
+- 2 запуска обновлятора при недоступных унаследованных модулях PowerShell, x64 и x86.
 
 Годовая копия: 15 августа 2027 — 15 августа 2028. Контракты только тестовых
 игроков продлены, бюджеты и стартовый ERS подготовлены для прогона без человека.
@@ -36,7 +37,7 @@ GameAssembly SHA256: F915DE7BD84B5C8D52D73789500BFC74E0108920EBE5FBABFCE1FC1DD24
 перезаписанного файла, прерванное обновление и сохранение внешних изменений.
 
 English
-The 223 assertions above ran against isolated game/save copies. Production DLLs
+The 225 assertions above ran against isolated game/save copies. Production DLLs
 exclude integration harnesses; the test loader requires a marked separate Save root.
 The 366-day run uses the native calendar and real scheduled Major, native player/AI
 match-result paths and financial operations. Controlled fixture contracts/budgets/ERS
@@ -49,7 +50,8 @@ refusal, real native transfers/academy closure, independent travel/prizes/sticke
 read-only report reconciliation and corrupt attribution handling. Windows PowerShell
 5.1 update checks cover checksums, fixed paths, actual overwrite rollback, interrupted
 recovery and preservation of external edits. A clean full-package install and repair
-were verified separately. The Steam SDK subscription/install-folder probe succeeded. Native-rendered report
+were verified separately. The Steam SDK subscription/install-folder probe succeeded. The 0.4.1 launcher also
+passed both host-architecture checks with an unavailable inherited PSModulePath. Native-rendered report
 frames were inspected in Russian and English at 1280x800 and 1920x1080.
 
 Limitations / Ограничения

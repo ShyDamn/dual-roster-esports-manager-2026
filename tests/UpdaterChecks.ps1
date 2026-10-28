@@ -24,7 +24,7 @@ function Fixture([string]$Name) {
     [IO.File]::WriteAllText($target,'old loader')
     [IO.File]::WriteAllText((Join-Path $package ('payload\'+$relative)),'new loader')
     [IO.File]::WriteAllText((Join-Path $package 'runtime\DualRoster.dll'),'gameplay')
-    $manifest=[pscustomobject]@{Schema=1;LoaderApi=1;BootstrapApi=1;WorkshopId=[uint64]3819071177;Version='0.4.0';GameHash=(Get-DrHash (Join-Path $game 'GameAssembly.dll'));Sha256=(Get-DrHash (Join-Path $package 'runtime\DualRoster.dll'))}
+    $manifest=[pscustomobject]@{Schema=1;LoaderApi=1;BootstrapApi=1;WorkshopId=[uint64]3819071177;Version='0.4.1';GameHash=(Get-DrHash (Join-Path $game 'GameAssembly.dll'));Sha256=(Get-DrHash (Join-Path $package 'runtime\DualRoster.dll'))}
     $manifest | ConvertTo-Json | Set-Content (Join-Path $package 'runtime\workshop-loader.json') -Encoding UTF8
     @([pscustomobject]@{Path=$relative;Hash=(Get-DrHash (Join-Path $package ('payload\'+$relative)))}) | ConvertTo-Json | Set-Content (Join-Path $package 'payload-manifest.json') -Encoding UTF8
     return [pscustomobject]@{Game=$game;Package=$package;Save=$save;Target=$target;Relative=$relative}

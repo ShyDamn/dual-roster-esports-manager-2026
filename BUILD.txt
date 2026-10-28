@@ -1,4 +1,4 @@
-Dual Roster 0.4.0 — source build
+﻿Dual Roster 0.4.1 — source build
 
 Русский: установите совместимый Workshop-пакет и .NET SDK 10.
 Запустите Build.ps1 -GamePath '<папка игры>'. Результат находится в build/.
@@ -43,3 +43,7 @@ NuGet restores the declared dependencies. The class-layout modification is in
 Il2CppInterop.Runtime/Runtime/VersionSpecific/Class/Class_6000_5.cs.
 Replace the separate BepInEx/core/Il2CppInterop.Runtime.dll with your rebuilt library to use it.
 Keep TerraFX.Interop.Windows.dll available alongside it. The plugin does not authenticate or lock this library.
+
+Steam prelaunch environment regression (Windows, Steam running, compatible subscription):
+powershell -NoProfile -ExecutionPolicy Bypass -File tests/LauncherEnvironmentChecks.ps1 -GameRoot '<game folder>'
+Both host architectures run UpdateOnly; the game and career are not opened.

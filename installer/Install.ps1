@@ -127,7 +127,7 @@ try {
 $bootstrap=Inside $GamePath 'DualRoster\Launch.ps1'
 $launchOptions='"'+(Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe')+'" -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "'+$bootstrap+'" %command%'
 [IO.File]::WriteAllText((Inside $GamePath 'DualRoster\Steam-LaunchOptions.txt'),$launchOptions,(New-Object Text.UTF8Encoding($true)))
-Write-Host 'Dual Roster Workshop Loader 0.4.0 installed. Subscribe to item 3819071177 and start through Steam.'
+Write-Host 'Dual Roster Workshop Loader 0.4.1 installed. Subscribe to item 3819071177 and start through Steam.'
 Write-Host 'One-time setup: paste DualRoster/Steam-LaunchOptions.txt into this game''s Steam Properties > Launch Options.'
 Write-Host 'Ordinary mod updates now load automatically on the next game launch. The main menu shows status.'
 Write-Host "Original loader files backed up to: $backup"

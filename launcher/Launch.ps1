@@ -2,6 +2,12 @@
       [Parameter(Position=0)][string]$GameExe,
       [Parameter(ValueFromRemainingArguments=$true)][string[]]$GameArguments)
 $ErrorActionPreference='Stop'
+# Steam can inherit PSModulePath from PowerShell 7 or another launcher. Restore
+# this host's built-in module path before resolving Windows PowerShell cmdlets.
+$nativeModules=Join-Path $PSHOME 'Modules'
+$env:PSModulePath=$nativeModules+[IO.Path]::PathSeparator+$env:PSModulePath
+Import-Module (Join-Path $nativeModules 'Microsoft.PowerShell.Management\Microsoft.PowerShell.Management.psd1') -ErrorAction Stop
+Import-Module (Join-Path $nativeModules 'Microsoft.PowerShell.Utility\Microsoft.PowerShell.Utility.psd1') -ErrorAction Stop
 . (Join-Path $PSScriptRoot 'Update.Core.ps1')
 if(![Environment]::Is64BitProcess) {
     $host64=Join-Path $env:WINDIR 'Sysnative\WindowsPowerShell\v1.0\powershell.exe'

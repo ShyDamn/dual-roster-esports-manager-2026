@@ -1,10 +1,10 @@
-# Dual Roster — Esports Manager 2026
+﻿# Dual Roster — Esports Manager 2026
 
 [Русский](#русский) · [English](#english) · [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3819071177)
 
 ## Русский
 
-**0.4.0 beta · Windows x64 · Steam build 26012398.** Основа и академия вашего клуба могут участвовать в одном турнире, если каждый состав проходит по условиям игры.
+**0.4.1 beta · Windows x64 · Steam build 26012398.** Основа и академия вашего клуба могут участвовать в одном турнире, если каждый состав проходит по условиям игры.
 
 ### Возможности
 
@@ -21,7 +21,7 @@
 1. Подпишитесь в Workshop и дождитесь загрузки. Закройте игру.
 2. Запустите `Install.cmd` из `SteamLibrary/steamapps/workshop/content/2749950/3819071177`. При отказе Windows в записи запустите его от имени администратора.
 3. В папке игры откройте `DualRoster/Steam-LaunchOptions.txt`. Скопируйте строку в Steam → свойства игры → параметры запуска. Это однократная настройка обновлятора. Если у вас уже есть собственный сторонний запускатель, сначала согласуйте их совместную настройку.
-4. Запускайте игру через Steam. Перед открытием карьеры дождитесь статуса `Dual Roster: 0.4.0 включён`.
+4. Запускайте игру через Steam. Перед открытием карьеры дождитесь статуса `Dual Roster: 0.4.1 включён`.
 
 **При переходе с 0.3.x установщик и настройка параметров запуска нужны один раз.** Обычная подписка сама по себе не устанавливает загрузчик с кодом.
 
@@ -57,7 +57,7 @@ DLL появляются в `build/`; сборка не устанавливае
 
 ## English
 
-**0.4.0 beta · Windows x64 · Steam build 26012398.** Register your club's main team and academy in the same event when both meet the game's requirements.
+**0.4.1 beta · Windows x64 · Steam build 26012398.** Register your club's main team and academy in the same event when both meet the game's requirements.
 
 - Independent tournament registration and withdrawal, exact rank/player requirements, the conflicting event's name, and a warning when an eligible sibling roster has not entered.
 - Three invitation actions: register main, register academy, decline. Decline remains available when neither roster is eligible, closes both invitations and survives reload. Existing entries are preserved.
