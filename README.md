@@ -4,76 +4,88 @@
 
 ## Русский
 
-Мод позволяет заявить основу и академию одного клуба на один турнир, если каждый состав проходит по рейтингу и не занят на другом турнире.
+**0.4.0 beta · Windows x64 · Steam build 26012398.** Основа и академия вашего клуба могут участвовать в одном турнире, если каждый состав проходит по условиям игры.
 
-- Отдельная регистрация и отмена на странице турнира.
-- В письмах три кнопки: «Заявить основу», «Заявить академию», «Отказаться». Отказ закрывает оба приглашения и сохраняется после загрузки карьеры. Уже поданные заявки он не отменяет.
-- При общей поездке билеты и отель оплачиваются за каждый состав из его собственного бюджета.
-- В разделе «Цифр. товары» есть переключатель «Основа / Академия». Меняются суммы, график, наборы наклеек и доход от автографов по никнеймам игроков.
-- Загрузчик берёт мод из подписки Workshop при запуске игры. Обычные обновления мода применяются без повторной установки. Отписка отключает мод при следующем запуске.
+### Возможности
 
-### Установка
+- Независимая регистрация и отмена на странице турнира. Видны текущая позиция и требование рейтинга, число недостающих игроков, название занятого турнира. Есть напоминание, когда заявлен один состав, а второй тоже проходит.
+- В приглашениях три кнопки: заявить основу, заявить академию, отказаться. Даже при двух недоступных составах от приглашения можно отказаться. Отказ закрывает оба письма и сохраняется после загрузки; существующие заявки он не отменяет.
+- Билеты и отель для общей поездки оплачиваются отдельно из бюджетов обоих составов.
+- В «Цифр. товарах» переключаются основа и академия, включая накопленные выплаты и автографы игроков.
+- В финансах появилась вкладка «Турниры клуба»: клуб, основа или академия; текущий месяц или вся доступная история; призовые, наклейки, билеты, отель и итог по турниру. Баланс выбранных бюджетов показан отдельно от результата операций. Отчёт ничего не начисляет.
+- Перед открытием карьеры мод дожидается Workshop. Можно вернуться в меню или отдельно подтвердить запуск без мода. Перед подтверждённым запуском без мода создаётся копия карьеры; мод остаётся выключен до перезапуска.
+- Кнопки и сообщения мода автоматически используют русский или английский язык игры. Для остальных языков используется английский.
 
-Версия **0.3.1 beta**, Windows x64, **Steam build 26012398**. Интерфейс игрового мода на русском; инструкции на русском и английском.
+### Установка и переход с 0.3.x
 
-1. Подпишитесь на мод в Workshop и дождитесь загрузки.
-2. Закройте игру и сделайте резервную копию карьеры.
-3. Откройте `SteamLibrary/steamapps/workshop/content/2749950/3819071177` и запустите `Install.cmd`.
-4. Запускайте игру через Steam. В главном меню дождитесь статуса `Dual Roster: 0.3.1 active / 0.3.1 включён`.
+1. Подпишитесь в Workshop и дождитесь загрузки. Закройте игру.
+2. Запустите `Install.cmd` из `SteamLibrary/steamapps/workshop/content/2749950/3819071177`. При отказе Windows в записи запустите его от имени администратора.
+3. В папке игры откройте `DualRoster/Steam-LaunchOptions.txt`. Скопируйте строку в Steam → свойства игры → параметры запуска. Это однократная настройка обновлятора. Если у вас уже есть собственный сторонний запускатель, сначала согласуйте их совместную настройку.
+4. Запускайте игру через Steam. Перед открытием карьеры дождитесь статуса `Dual Roster: 0.4.0 включён`.
 
-После обновления игры до build 26012398 запустите новый установщик **повторно**, в том числе при переходе с 0.3.0. Версия 0.3.1 обновляет привязки к игре и загрузчик. Старые файлы сохраняются в резервной копии. При ошибке записи в папку игры запустите установщик от имени администратора.
+**При переходе с 0.3.x установщик и настройка параметров запуска нужны один раз.** Обычная подписка сама по себе не устанавливает загрузчик с кодом.
 
-После обновления самой игры может понадобиться новая версия загрузчика и повторная установка. Подписка без первоначальной установки загрузчика не запускает мод с кодом.
+Обновлятор запускается перед игрой, ждёт загрузку Workshop и проверяет совместимость и контрольные суммы. Когда мы уже выпустили пакет для новой сборки игры, он заменит нужные компоненты автоматически. Если совместимого пакета ещё нет, обновлятор остановит запуск и объяснит причину. Поддержку нового патча игры всё равно нужно проверить и выпустить; автоматическая установка не заменяет эту работу.
 
-### Сборка из исходников
+При изменении компонентов сохраняются их предыдущие версии и копия `Save` в `DualRosterBackups/update-*` внутри папки игры. При ошибке записи выполняется откат, а после прерванного обновления восстановление проверяется на следующем запуске. Сохранения обновлятор не исправляет и не пересчитывает.
 
-Установите поддерживаемый Workshop-пакет: он содержит BepInEx и API-обёртки для этой сборки игры. Затем установите .NET SDK 10 и выполните:
+### Финансовая история
+
+Суммы берутся из штатных операций и бюджетов. Для новых призовых и поездок мод сохраняет связь с турниром в `Save/DualRoster/finance-<slot>.json`. История наклеек связывается по штатным ID турниров и месячным выплатам только при точном совпадении с поступлениями бюджета. Старые или неполные записи без надёжной связи показываются отдельно. Удалённые самой игрой операции мод не восстанавливает.
+
+Журнал хранит только привязки: повреждение или отсутствие журнала не меняет деньги. Сохраняйте всю папку `Save`, включая `DualRoster`, когда переносите карьеру.
+
+### Отключение
+
+Отпишитесь и перезапустите игру. Загрузчик предложит явно подтвердить вход без мода. Штатная логика игры при этом может снять совместную заявку академии — именно поэтому перед входом создаётся копия.
+
+Для полного удаления сначала уберите строку из параметров запуска Steam, затем при закрытой игре удалите `BepInEx/plugins/DualRosterWorkshop/DualRoster.Workshop.dll` и папку `DualRoster` в папке игры. Не удаляйте чужие плагины. Резервные копии и карьеру сохраняйте отдельно.
+
+### Сборка и проверки
+
+Установите совместимый пакет, затем .NET SDK 10:
 
 ```powershell
 ./Build.ps1 -GamePath 'C:\Program Files (x86)\Steam\steamapps\common\Esports Manager 2026'
 dotnet run --project tests/WorkshopChecks.csproj -c Release
+powershell -NoProfile -ExecutionPolicy Bypass -File tests/UpdaterChecks.ps1 -WorkRoot '<temporary workspace>'
 ```
 
-DLL появятся в `build/`. Скрипт сборки не устанавливает их в игру. `src/` содержит игровую логику, `loader/` — загрузчик Workshop, `installer/` — установщик, `tests/` — проверки загрузки пакета.
+DLL появляются в `build/`; сборка не устанавливает их в игру. `src/` — игровая логика, `loader/` — загрузчик и защита карьеры, `shared/` — локализация и элементы интерфейса, `launcher/` — обновлятор до запуска, `installer/` — первичная установка.
 
-Разработка игрового мода: `-p:TestBuild=true` включает интеграционные проверки из `src/*Checks.cs`. Используйте только отдельную копию игры и сохранения с маркером `.dualroster-test-copy`; тесты меняют карьеру. В `RosterPanel.cs` задаётся тестовый слот. Карьеры и журналы пользователя в репозиторий не входят.
-
-### Что проверено и что ограничено
-
-Проверены обе очередности регистрации, отказ от приглашений и его сохранение, раздельные бюджеты поездок, штатные призовые и выплаты наклеек, отображение академии на экране наклеек, загрузка пакета и ожидание обновления. Проверки выполнялись на изолированных копиях карьеры. Полного многосезонного прогона и проверки всех сочетаний модов нет.
-
-Мод не пересчитывает прошлые недоплаты за поездки и не начисляет призовые или наклейки повторно. После отключения штатная логика игры может удалить совместную заявку академии. Загрузчик не меняет DLL посреди запущенной игры.
-
-Чтобы отключить мод, отпишитесь и перезапустите игру. Для удаления загрузчика при закрытой игре удалите `BepInEx/plugins/DualRosterWorkshop/DualRoster.Workshop.dll`. Резервные копии изменённых установщиком файлов находятся в `DualRosterBackups` внутри папки игры.
+Интеграционные проверки включаются только через `-p:TestBuild=true` и требуют отдельной копии игры и сохранений с маркером `.dualroster-test-copy`. Они меняют тестовую карьеру. Исходники не содержат сохранений, журналов пользователя, исполняемых файлов игры или игровых ресурсов. Подробности сборки и фактически выполненных проверок: `BUILD.txt`, `VALIDATION.txt`.
 
 ## English
 
-Dual Roster lets your club's main team and academy enter the same tournament. Both must meet the ranking requirements and be free of another event.
+**0.4.0 beta · Windows x64 · Steam build 26012398.** Register your club's main team and academy in the same event when both meet the game's requirements.
 
-- Independent registration and cancellation on the tournament page.
-- Three invitation buttons: register main, register academy, or decline. Declining closes both letters, survives save/load and keeps existing tournament entries.
-- Shared travel choices charge flights and hotels separately to each roster's own budget.
-- A main/academy selector in Digital Goods switches totals, the chart, sticker sets and autograph income by player nickname.
-- After one-time loader installation, the mod loads from its Workshop subscription on game launch. Ordinary updates need no installer rerun; unsubscribing disables the mod on the next launch.
+- Independent tournament registration and withdrawal, exact rank/player requirements, the conflicting event's name, and a warning when an eligible sibling roster has not entered.
+- Three invitation actions: register main, register academy, decline. Decline remains available when neither roster is eligible, closes both invitations and survives reload. Existing entries are preserved.
+- Separate flights and hotel charges for both participating rosters; main/academy sticker totals and player autographs.
+- A new **Club events** finance tab with club/main/academy scope, this-month/all-history filters and per-event prizes, stickers, flights, hotel and net. Current wallet balance is separate. Viewing reports never creates money.
+- A career gate waits for Workshop or asks you to explicitly load without the mod. The latter makes a career backup and keeps the mod disabled until restart.
+- Mod UI follows the game's Russian/English locale, with English fallback for other languages.
 
-### Install and build
+### One-time upgrade/setup
 
-**0.3.1 beta; Windows x64; Steam build 26012398 only. Gameplay UI is Russian.** Subscribe, wait for Steam, close the game, back up your career, and run `Install.cmd` from `SteamLibrary/steamapps/workshop/content/2749950/3819071177`. Launch normally through Steam and wait for the main-menu status to say `active` before opening a career.
+Subscribe and let Steam finish downloading. Close the game and run `Install.cmd` from `SteamLibrary/steamapps/workshop/content/2749950/3819071177`. If Windows denies write access, run as administrator.
 
-After the game update to build 26012398, rerun the new installer, including when upgrading from 0.3.0. Version 0.3.1 refreshes the generated game bindings and loader. Existing files are backed up. If Windows denies write access, run as administrator. Updates to the game or loader compatibility components may require another installation.
+Copy the line from the installed game's `DualRoster/Steam-LaunchOptions.txt` into that game's Steam launch options. **Upgrading from 0.3.x requires this installer and launch-option setup once.** Do not overwrite an unrelated third-party launcher configuration without checking how they should be combined. Launch through Steam normally and wait for the main-menu `active` status.
 
-To build, install the supported Workshop package and .NET SDK 10, then run `Build.ps1 -GamePath '<game directory>'`. The two production DLLs are written to `build/`; no game files are changed. Run `dotnet run --project tests/WorkshopChecks.csproj -c Release` for package checks. See `BUILD.txt` for dependency and runtime rebuild details.
+The prelaunch updater waits for subscribed content, verifies the exact game hash and package checksums, and updates compatibility components before the game loads them. A new game build still needs a tested release from us. If no compatible release is available, it stops the launch with an explanation. Subscribing alone cannot perform the initial code-loader installation.
 
-Integration tests are opt-in (`-p:TestBuild=true`) and require an isolated game/save copy. Never point them at a live career. Saves, user logs, original game binaries and game assets are not distributed.
+Changed components and the career directory are backed up under the game's `DualRosterBackups/update-*`. Failed writes roll back; interrupted updates are checked at the next launch. The updater does not edit career contents or award historical money.
 
-Travel fixes apply going forward. Prize and sticker calculations remain native; rewards are not duplicated. Full multi-season runs and all mod combinations have not been tested. The base game may remove shared academy registrations after disabling the mod. The loader never swaps gameplay code mid-session.
+### Accounting and removal
 
-Unsubscribe and restart to disable the mod. To remove the loader, close the game and delete `BepInEx/plugins/DualRosterWorkshop/DualRoster.Workshop.dll`. Installation backups are under the game's `DualRosterBackups` directory.
+Reports read native ledger amounts. New travel/prize links are kept in `Save/DualRoster/finance-<slot>.json`. Native sticker history is attributed by exact tournament IDs only when its monthly sum reconciles with the wallet credits. Unlinked older/incomplete records remain separate; deleted native transactions cannot be reconstructed. Journal loss never changes balances. Include `Save/DualRoster` when moving a career.
+
+Unsubscribe and restart to disable gameplay code; the career gate requires explicit confirmation. The base game may remove the academy's shared entry when loading without this mod. To remove the loader completely, first clear its Steam launch option, then close the game and remove `BepInEx/plugins/DualRosterWorkshop/DualRoster.Workshop.dll` and the game's `DualRoster` folder. Preserve careers, backups and other mods.
+
+Build with .NET SDK 10 and `Build.ps1 -GamePath '<game folder>'`. See the commands above, `BUILD.txt` and `VALIDATION.txt`. Integration harnesses require an isolated marked save/game copy and are excluded from production.
 
 ## License
 
-Original Dual Roster code, loader, tests and installer: **MIT**, copyright 2026 Danila Shubin (ShyDamn) and contributors. See `LICENSE`.
+Original mod, launcher, installer and tests: **MIT**, copyright 2026 Danila Shubin (ShyDamn) and contributors. Dependencies keep their licenses; the complete modified LGPL runtime source and notices are included under `third-party/`. See `LICENSE` and `THIRD-PARTY.txt`.
 
-Dependencies retain their own licenses. The compatibility runtime is a separate LGPL library; its complete modified source archive and license are included under `third-party/`. See `THIRD-PARTY.txt` and `BUILD.txt`. MIT does not relicense BepInEx, Il2CppInterop or the game.
-
-Unofficial community mod, not affiliated with the game's developer.
+Unofficial community mod, not affiliated with Neurona Games. No original game executables, implementation or media are distributed.

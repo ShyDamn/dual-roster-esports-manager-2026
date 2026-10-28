@@ -1,4 +1,4 @@
-param([string]$GamePath, [switch]$VerifyOnly, [string]$LoaderArchive)
+﻿param([string]$GamePath, [switch]$VerifyOnly, [string]$LoaderArchive)
 $ErrorActionPreference = 'Stop'
 $expectedGame = 'F915DE7BD84B5C8D52D73789500BFC74E0108920EBE5FBABFCE1FC1DD24D60F9'
 $expectedLoader = 'F4CC496BD098A0DF4164B81E3737297707F13A47C2478DBA2F60EEFAB784817A'
@@ -38,7 +38,7 @@ foreach ($entry in $manifest) {
     }
 }
 $runtime = Get-Content (Join-Path $PSScriptRoot 'runtime\workshop-loader.json') -Raw | ConvertFrom-Json
-if ($runtime.Schema -ne 1 -or $runtime.LoaderApi -ne 1 -or $runtime.WorkshopId -ne 3819071177 -or
+if ($runtime.Schema -ne 1 -or $runtime.LoaderApi -ne 1 -or $runtime.BootstrapApi -ne 1 -or $runtime.GameHash -ne $expectedGame -or $runtime.WorkshopId -ne 3819071177 -or
     $runtime.CompatibilityId -ne 'em2026-26012398-interop107-v1' -or
     (Get-FileHash -LiteralPath (Join-Path $PSScriptRoot 'runtime\DualRoster.dll')).Hash -ne $runtime.Sha256) {
     throw 'Workshop gameplay package verification failed.'
@@ -124,7 +124,11 @@ try {
     }
     throw
 }
-Write-Host 'Dual Roster Workshop Loader 0.3.1 installed. Subscribe to item 3819071177 and start through Steam.'
+$bootstrap=Inside $GamePath 'DualRoster\Launch.ps1'
+$launchOptions='"'+(Join-Path $env:WINDIR 'System32\WindowsPowerShell\v1.0\powershell.exe')+'" -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "'+$bootstrap+'" %command%'
+[IO.File]::WriteAllText((Inside $GamePath 'DualRoster\Steam-LaunchOptions.txt'),$launchOptions,(New-Object Text.UTF8Encoding($true)))
+Write-Host 'Dual Roster Workshop Loader 0.4.0 installed. Subscribe to item 3819071177 and start through Steam.'
+Write-Host 'One-time setup: paste DualRoster/Steam-LaunchOptions.txt into this game''s Steam Properties > Launch Options.'
 Write-Host 'Ordinary mod updates now load automatically on the next game launch. The main menu shows status.'
 Write-Host "Original loader files backed up to: $backup"
 Write-Host 'Career saves were not changed. Keep a separate backup before playing with mods.'

@@ -8,6 +8,22 @@ internal static class Travel
     [ThreadStatic] internal static bool CheckingEvents;
     [ThreadStatic] internal static DataTeam? PayingTeam;
 
+    internal static DataTournament? EventFor(DataTeam team)
+    {
+        if (CurrentTournament != null && Rules.Registered(CurrentTournament, team)) return CurrentTournament;
+        DataTournament? found = null;
+        var active = DataTournaments.ActiveTournaments;
+        if (active == null) return null;
+        for (int i = 0; i < active.Cast<Il2CppSystem.Collections.Generic.IReadOnlyCollection<DataTournament>>().Count; i++)
+        {
+            var t = active[i];
+            if (!t.IsLan || t.State is TournamentState.Registration or TournamentState.Finished || !Rules.Registered(t, team)) continue;
+            if (found != null) return null;
+            found = t;
+        }
+        return found;
+    }
+
     internal static List<DataTeam> Travellers(DataTeam? requested)
     {
         var main = GlobalValues.DataTeam;
@@ -39,8 +55,11 @@ internal static class Travel
         foreach (var team in Travellers(requested))
         {
             PayingTeam = team;
+            var previousEvent = FinanceJournal.CurrentEvent;
+            var tournament = EventFor(team);
+            if (tournament != null) FinanceJournal.CurrentEvent = new(tournament.Id, tournament.Name, tournament.DateEnd.ToString("yyyy-MM"));
             try { nativePayment(team); }
-            finally { PayingTeam = null; }
+            finally { PayingTeam = null; FinanceJournal.CurrentEvent = previousEvent; }
         }
         return false;
     }

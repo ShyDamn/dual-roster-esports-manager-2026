@@ -1,4 +1,5 @@
 using HarmonyLib;
+using DualRoster.Shared;
 
 namespace DualRoster;
 
@@ -16,9 +17,9 @@ internal static class StickerLabels
         var body = email.BodyAfterContent ?? "";
         var old = body.IndexOf(marker, StringComparison.Ordinal);
         if (old >= 0) body = body[..old];
-        email.BodyAfterContent = body + marker + team.Name + "\n" +
-            $"Бюджет: {(team.IsAcademy ? "академия" : "основа")}. " +
-            $"Начислено за всё время: ${payout.Earned:N0}. Осталось к продаже: ${payout.Remaining:N0}.";
+        email.BodyAfterContent = body + marker + team.Name + "\n" + UiText.T(
+            $"Бюджет: {(team.IsAcademy ? "академия" : "основа")}. Начислено за всё время: {UiText.Money(payout.Earned)}. Осталось к продаже: {UiText.Money(payout.Remaining)}.",
+            $"Budget: {(team.IsAcademy ? "academy" : "main team")}. Earned so far: {UiText.Money(payout.Earned)}. Remaining sales: {UiText.Money(payout.Remaining)}.");
     }
 }
 

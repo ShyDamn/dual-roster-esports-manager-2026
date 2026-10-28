@@ -40,7 +40,7 @@ public sealed class LoaderStatus : MonoBehaviour
             var rect = panel.GetComponent<RectTransform>();
             rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0, 0);
             rect.anchoredPosition = new Vector2(24, 22);
-            rect.sizeDelta = new Vector2(1000, 42);
+            rect.sizeDelta = new Vector2(1000, 60);
             var background = panel.AddComponent<Image>();
             background.color = new Color(.04f, .08f, .11f, .92f);
             background.raycastTarget = false;
@@ -54,6 +54,8 @@ public sealed class LoaderStatus : MonoBehaviour
             _label.font = template.font;
             _label.fontSharedMaterial = template.fontSharedMaterial;
             _label.fontSize = 19;
+            _label.enableAutoSizing = true; _label.fontSizeMin = 14; _label.fontSizeMax = 19;
+            _label.enableWordWrapping = true; _label.richText = false;
             _label.color = new Color(.75f, .95f, .9f, 1);
             _label.raycastTarget = false;
         }

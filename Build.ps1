@@ -1,4 +1,4 @@
-param([Parameter(Mandatory=$true)][string]$GamePath, [string]$Dotnet='dotnet')
+﻿param([Parameter(Mandatory=$true)][string]$GamePath, [string]$Dotnet='dotnet')
 $ErrorActionPreference='Stop'
 $bepinex=Join-Path (Resolve-Path -LiteralPath $GamePath).Path 'BepInEx'
 if (!(Test-Path (Join-Path $bepinex 'core\BepInEx.Unity.IL2CPP.dll'))) { throw 'Install the supported Workshop package first.' }

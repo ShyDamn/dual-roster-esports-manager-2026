@@ -9,6 +9,12 @@ internal static class RuntimeChecks
 {
     internal static void Run()
     {
+        var preview = Environment.GetEnvironmentVariable("DUALROSTER_UI_PREVIEW");
+        if (!string.IsNullOrEmpty(preview)) { FeatureChecks.Preview(preview); return; }
+        var longRun = Environment.GetEnvironmentVariable("DUALROSTER_LONGRUN");
+        if (longRun == "run") { LongRunChecks.Begin(); return; }
+        if (longRun == "resume") { LongRunChecks.Resume(); return; }
+        if (Environment.GetEnvironmentVariable("DUALROSTER_FEATURE_CHECKS") == "1") { FeatureChecks.Run(); return; }
         if (Environment.GetEnvironmentVariable("DUALROSTER_FINANCE_DIAG") == "1")
         { FinanceChecks.Diagnose(); FinanceChecks.Run(); FinanceChecks.CheckStickerPayments(); return; }
         var main = GlobalValues.DataTeam;

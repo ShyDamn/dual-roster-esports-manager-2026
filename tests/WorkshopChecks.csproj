@@ -1,4 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup>
   <ItemGroup><Compile Include="../loader/WorkshopPackage.cs" Link="WorkshopPackage.cs" /></ItemGroup>
+  <ItemGroup>
+    <Compile Include="../loader/CareerGatePolicy.cs" Link="CareerGatePolicy.cs" />
+    <Compile Include="../shared/UiText.cs" Link="UiText.cs" />
+  </ItemGroup>
 </Project>

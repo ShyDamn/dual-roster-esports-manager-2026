@@ -1,19 +1,59 @@
-Dual Roster 0.3.1 beta — validation, 2026-10-20
-Target: Windows x64, Steam build 26012398, Unity 6000.5.10f1.
+﻿Dual Roster 0.4.0 beta — validation, 2026-10-28
+Windows x64; Steam build 26012398; Unity 6000.5.10f1.
+GameAssembly SHA256: F915DE7BD84B5C8D52D73789500BFC74E0108920EBE5FBABFCE1FC1DD24D60F9
 
-119 automated assertions passed:
-- 62 registration, invitation and refusal assertions in the actual IL2CPP game.
-- 35 finance and sticker dashboard assertions in the actual IL2CPP game.
-- 22 independent Workshop package and download-state checks.
-Runtime tests used isolated copies of the game/save storage; no user career files are distributed.
+Русский
+Проверки выполнялись в отдельной копии игры с перенаправлением Save.
+Реальная карьера пользователя для тестов не менялась и не распространяется.
 
-Invitation checks include both roster orders, repeat clicks, closed events, save/load,
-third-button click, closing both letters without entry, persistent refusal, preserving
-an existing roster entry, and restoring the normal footer for other email types.
-The Digital Goods checks exercise both selector buttons, academy totals, remaining
-sales, actual academy autograph nicknames, switching back, and unchanged budgets.
-Loader smoke checks cover ready content, cached-but-unsubscribed content, pending
-updates and the real Steam subscription API. Production builds exclude test harnesses.
-The installer was checked on an existing 0.3.0 setup, including backup/removal of the
-old DLL, the new loader files and checksum verification.
-Multi-season behavior and arbitrary other mod combinations remain untested.
+223 автоматических проверки:
+- 62 регистрации, приглашения и отказы в настоящей IL2CPP-игре;
+- 35 финансов, поездок, призовых, наклеек и цифровых товаров;
+- 28 нового отчёта, точных причин отказа, переводов игрока и закрытия академии;
+- 14 полного штатного Мажора и 366 игровых дней через смену года;
+- 6 повторной загрузки этого сохранения в новом процессе игры;
+- 12 защиты открытия карьеры: ожидание, возврат и подтверждение без мода с копией;
+- 36 независимых проверок пакета, состояний Workshop, защиты и локализации;
+- 22 обновлятора в Windows PowerShell 5.1, включая откат после реальной перезаписи;
+- 8 установки и восстановления файлов полного релизного пакета.
+
+Годовая копия: 15 августа 2027 — 15 августа 2028. Контракты только тестовых
+игроков продлены, бюджеты и стартовый ERS подготовлены для прогона без человека.
+Использован настоящий запланированный Legacy Global Major: оба состава заявлены,
+сыграли штатные матчи и имеют записи итоговой истории. Проверены штатные призовые,
+расходы, наклейки обоих составов, защита от повторной оплаты, сохранение бюджетов,
+операций и отчёта после перезапуска. Тест не гарантирует обоим составам призовое место.
+
+Проверены оба порядка регистрации из обоих писем, отказ без заявки и при уже
+заявленном составе, сохранение отказа, закрытый турнир и старые кнопки. Если оба
+состава не подходят, письмо остаётся доступным для отказа. Проверены месячные суммы
+нового отчёта, разделение бюджетов, отсутствие начислений при просмотре, повреждение
+и перезагрузка журнала привязок. После настоящего перевода игрока старые автографы
+сохранены; штатное закрытие академии завершилось в копии, отчёт остался работоспособным.
+
+Обновлятор: проверка сборки и хешей до записи, повтор без изменений, неверная сборка,
+повреждённый пакет, запрет выхода путей и чужих файлов, частичная ошибка, восстановление
+перезаписанного файла, прерванное обновление и сохранение внешних изменений.
+
+English
+The 223 assertions above ran against isolated game/save copies. Production DLLs
+exclude integration harnesses; the test loader requires a marked separate Save root.
+The 366-day run uses the native calendar and real scheduled Major, native player/AI
+match-result paths and financial operations. Controlled fixture contracts/budgets/ERS
+enable unattended execution; these preparations are not gameplay features. A fresh
+process reloaded the resulting career and reconciled both budgets, ledgers and report.
+The test does not guarantee a prize-winning placement for both rosters.
+
+Coverage includes both email entry orders, persistent refusal, unavailable-roster
+refusal, real native transfers/academy closure, independent travel/prizes/stickers,
+read-only report reconciliation and corrupt attribution handling. Windows PowerShell
+5.1 update checks cover checksums, fixed paths, actual overwrite rollback, interrupted
+recovery and preservation of external edits. A clean full-package install and repair
+were verified separately. The Steam SDK subscription/install-folder probe succeeded. Native-rendered report
+frames were inspected in Russian and English at 1280x800 and 1920x1080.
+
+Limitations / Ограничения
+One year and one controlled real Major are regression evidence, not proof for every
+career, future game build, multi-season scenario or other mod combination. Missing
+native financial history is not reconstructed. Unknown game builds require a new
+tested compatibility package; the prelauncher does not generate game bindings.

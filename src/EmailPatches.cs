@@ -1,4 +1,5 @@
 using HarmonyLib;
+using DualRoster.Shared;
 
 namespace DualRoster;
 
@@ -6,8 +7,9 @@ internal static class Invitations
 {
     internal static EmailView? CurrentView;
     private const string DeclinedMarker = "[Dual Roster] Приглашение отклонено.";
+    private const string DeclinedEnglish = "[Dual Roster] Invitation declined.";
 
-    internal static bool Declined(DataEmail? email) => email?.BodyAfterContent?.Contains(DeclinedMarker) == true;
+    internal static bool Declined(DataEmail? email) => email?.BodyAfterContent?.Contains(DeclinedMarker) == true || email?.BodyAfterContent?.Contains(DeclinedEnglish) == true;
 
     internal static TournamentRegistrationContent? Content(DataEmail? email) =>
         email?.Content?.TryCast<TournamentRegistrationContent>();
@@ -18,10 +20,15 @@ internal static class Invitations
     {
         var content = Content(email);
         if (content == null || email == null || !email.IsIncoming) return;
+        if (Declined(email)) email.BodyAfterContent = email.BodyAfterContent.Replace(DeclinedMarker, UiText.IsRussian ? DeclinedMarker : DeclinedEnglish).Replace(DeclinedEnglish, UiText.IsRussian ? DeclinedMarker : DeclinedEnglish);
         var t = content.TournamentData;
-        email.IsActive = !Declined(email) && t?.State == TournamentState.Registration &&
-            (Rules.CannotEnter(t, GlobalValues.DataTeam) == null ||
-             Rules.CannotEnter(t, GlobalValues.DataTeam?.GetAcademyTeam()) == null);
+        var main = GlobalValues.DataTeam;
+        if (main == null) return;
+        var academy = main.GetAcademyTeam();
+        // Ineligible rosters still need the Decline action. Eligibility only controls
+        // registration buttons, not whether an unanswered invitation is actionable.
+        var complete = t != null && Rules.Registered(t, main) && (academy == null || academy.IsDisbanded || Rules.Registered(t, academy));
+        email.IsActive = !Declined(email) && t?.State == TournamentState.Registration && !complete;
     }
 
     internal static void SyncAll()
@@ -40,8 +47,7 @@ internal static class Invitations
         {
             Visible = !Declined(content?.Email) && t?.State == TournamentState.Registration,
             Interactable = !Declined(content?.Email) && Rules.CannotEnter(t, team) == null,
-            Text = registered ? (academy ? "Академия заявлена" : "Основа заявлена")
-                : (academy ? "Заявить академию" : "Заявить основу")
+            Text = registered ? UiText.Registered(academy) : UiText.Register(academy)
         };
     }
 
@@ -74,7 +80,7 @@ internal static class Invitations
                     matches.Add(emails[i]);
         // Mark every matching letter before notifying the UI through native Deactivate.
         foreach (var item in matches)
-            if (!Declined(item)) item.BodyAfterContent = (item.BodyAfterContent ?? "") + "\n\n" + DeclinedMarker;
+            if (!Declined(item)) item.BodyAfterContent = (item.BodyAfterContent ?? "") + "\n\n" + (UiText.IsRussian ? DeclinedMarker : DeclinedEnglish);
         foreach (var item in matches) DataEmails.Deactivate(item);
         Plugin.Logger.LogInfo($"Invitation declined: {t.Name}; existing registrations preserved.");
         var view = CurrentView;
@@ -87,9 +93,9 @@ internal static class Invitations
         return new UserMessage
         {
             Tone = MessageTone.Neutral,
-            Title = "Dual Roster · основа + академия",
-            Message = $"Основа: {Rules.CannotEnter(t, GlobalValues.DataTeam) ?? "может участвовать"}\n" +
-                $"Академия: {Rules.CannotEnter(t, GlobalValues.DataTeam?.GetAcademyTeam()) ?? "может участвовать"}"
+            Title = UiText.T("Dual Roster · основа + академия", "Dual Roster · main + academy"),
+            Message = $"{UiText.Main}: {Rules.CannotEnter(t, GlobalValues.DataTeam) ?? UiText.T("может участвовать", "eligible")}\n" +
+                $"{UiText.Academy}: {Rules.CannotEnter(t, GlobalValues.DataTeam?.GetAcademyTeam()) ?? UiText.T("может участвовать", "eligible")}"
         };
     }
 }

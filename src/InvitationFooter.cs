@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DualRoster.Shared;
 
 namespace DualRoster;
 
@@ -45,7 +46,13 @@ internal sealed class InvitationFooter
             Arrange(view._confirmBtn, 0);
             Arrange(view._cancelBtn, 1);
             Arrange(footer._decline, 2);
-            footer._decline.GetComponentInChildren<TMP_Text>(true).text = "Отказаться";
+            footer._decline.GetComponentInChildren<TMP_Text>(true).text = UiText.Decline;
+            foreach (var button in new[] { view._confirmBtn, view._cancelBtn, footer._decline })
+            {
+                var label = button.GetComponentInChildren<TMP_Text>(true);
+                label.enableAutoSizing = true; label.fontSizeMin = 14; label.fontSizeMax = 22;
+                label.enableWordWrapping = true;
+            }
             footer._decline.interactable = true;
             footer._decline.onClick = new Button.ButtonClickedEvent();
             footer._decline.onClick.AddListener((UnityEngine.Events.UnityAction)(Action)(() => Invitations.Decline(email)));

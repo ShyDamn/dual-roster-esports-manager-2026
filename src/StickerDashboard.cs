@@ -3,6 +3,7 @@ using Il2CppInterop.Runtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DualRoster.Shared;
 
 namespace DualRoster;
 
@@ -10,6 +11,18 @@ internal static class StickerDashboard
 {
     [ThreadStatic] internal static DataTeam? Context;
     private static readonly Dictionary<IntPtr, (string Club, bool Academy)> Choices = new();
+    private static readonly Dictionary<IntPtr, (FinancesStickersSection Section, TMP_Text Main, TMP_Text Academy)> Labels = new();
+
+    internal static void RefreshLabels()
+    {
+        foreach (var entry in Labels.Values.ToArray())
+        {
+            if (entry.Main == null || entry.Academy == null) continue;
+            var main = GlobalValues.DataTeam; var academy = main?.GetAcademyTeam();
+            entry.Main.text = UiText.Main + " · " + main?.Name;
+            entry.Academy.text = UiText.Academy + " · " + (academy?.Name ?? UiText.T("нет состава", "no roster"));
+        }
+    }
 
     internal static DataTeam? Team(FinancesStickersSection section)
     {
@@ -44,12 +57,13 @@ internal static class StickerDashboard
         layout.childControlWidth = layout.childControlHeight = true;
         layout.childForceExpandWidth = true;
         layout.childForceExpandHeight = false;
-        MakeButton(row.transform, section, false, "Основа · " + main.Name, true, selected?.Id == main.Id);
-        MakeButton(row.transform, section, true, "Академия · " + (academy?.Name ?? "нет состава"), academy != null, selected?.Id == academy?.Id);
+        var mainLabel = MakeButton(row.transform, section, false, UiText.Main + " · " + main.Name, true, selected?.Id == main.Id);
+        var academyLabel = MakeButton(row.transform, section, true, UiText.Academy + " · " + (academy?.Name ?? UiText.T("нет состава", "no roster")), academy != null, selected?.Id == academy?.Id);
+        Labels[section.Pointer] = (section, mainLabel, academyLabel);
         LayoutRebuilder.ForceRebuildLayoutImmediate(section._content.Cast<RectTransform>());
     }
 
-    private static void MakeButton(Transform parent, FinancesStickersSection section, bool academy, string title, bool enabled, bool selected)
+    private static TMP_Text MakeButton(Transform parent, FinancesStickersSection section, bool academy, string title, bool enabled, bool selected)
     {
         var obj = Rect(academy ? "Academy" : "Main", parent);
         var height = obj.AddComponent<LayoutElement>();
@@ -69,10 +83,13 @@ internal static class StickerDashboard
         label.font = section._style.font;
         label.fontSharedMaterial = section._style.fontSharedMaterial;
         label.fontSize = 20;
+        label.enableAutoSizing = true; label.fontSizeMin = 14; label.fontSizeMax = 20;
+        label.enableWordWrapping = true; label.richText = false;
         label.color = Color.white;
         label.alignment = TextAlignmentOptions.Center;
         label.raycastTarget = false;
         label.text = title;
+        return label;
     }
 
     private static GameObject Rect(string name, Transform parent)

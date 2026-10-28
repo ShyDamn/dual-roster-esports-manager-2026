@@ -2,6 +2,7 @@ using Il2CppInterop.Runtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DualRoster.Shared;
 
 namespace DualRoster;
 
@@ -13,6 +14,7 @@ public sealed class RosterPanel : MonoBehaviour
     private GameObject? _canvas;
     private TextMeshProUGUI _mainStatus = null!, _academyStatus = null!, _mainCaption = null!, _academyCaption = null!;
     private Button _mainButton = null!, _academyButton = null!;
+    private TextMeshProUGUI _header = null!, _warning = null!;
 #if DUALROSTER_TESTING
     private bool _tested;
     private bool _testLoading;
@@ -91,13 +93,15 @@ public sealed class RosterPanel : MonoBehaviour
         var rect = panel.GetComponent<RectTransform>();
         rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(1, 0);
         rect.anchoredPosition = new Vector2(-30, 65);
-        rect.sizeDelta = new Vector2(555, 244);
+        rect.sizeDelta = new Vector2(680, 330);
         panel.AddComponent<Image>().color = new Color(.055f, .1f, .135f, .98f);
-        Label(panel.transform, "Header", "ЗАЯВКИ СОСТАВОВ · DUAL ROSTER", 16, -12, 524, 30, view, 21);
-        _mainStatus = Label(panel.transform, "MainStatus", "", 16, -47, 524, 28, view, 20);
-        _mainButton = MakeButton(panel.transform, "MainButton", -79, view, false, out _mainCaption);
-        _academyStatus = Label(panel.transform, "AcademyStatus", "", 16, -135, 524, 28, view, 20);
-        _academyButton = MakeButton(panel.transform, "AcademyButton", -168, view, true, out _academyCaption);
+        _header = Label(panel.transform, "Header", "", 16, -12, 648, 30, view, 21);
+        _mainStatus = Label(panel.transform, "MainStatus", "", 16, -48, 648, 48, view, 20);
+        _mainButton = MakeButton(panel.transform, "MainButton", -100, view, false, out _mainCaption);
+        _academyStatus = Label(panel.transform, "AcademyStatus", "", 16, -158, 648, 48, view, 20);
+        _academyButton = MakeButton(panel.transform, "AcademyButton", -210, view, true, out _academyCaption);
+        _warning = Label(panel.transform, "SiblingWarning", "", 16, -266, 648, 48, view, 18);
+        _warning.color = new Color(1, .79f, .38f, 1);
         Plugin.Logger.LogInfo("Native registration panel created.");
     }
 
@@ -123,6 +127,8 @@ public sealed class RosterPanel : MonoBehaviour
         var label = go.AddComponent<TextMeshProUGUI>();
         label.font = view._name.font;
         label.fontSize = fontSize;
+        label.enableAutoSizing = true; label.fontSizeMin = 15; label.fontSizeMax = fontSize;
+        label.enableWordWrapping = true; label.richText = false;
         label.color = Color.white;
         label.raycastTarget = false;
         label.text = text;
@@ -134,12 +140,12 @@ public sealed class RosterPanel : MonoBehaviour
         bool academy, out TextMeshProUGUI caption)
     {
         var go = RectObject(id, parent);
-        Place(go.GetComponent<RectTransform>(), 16, y, 524, 46);
+        Place(go.GetComponent<RectTransform>(), 16, y, 648, 46);
         var image = go.AddComponent<Image>();
         image.color = new Color(.06f, .42f, .47f, 1);
         var button = go.AddComponent<Button>();
         button.targetGraphic = image;
-        caption = Label(go.transform, "Caption", "", 12, 0, 500, 46, view, 20);
+        caption = Label(go.transform, "Caption", "", 12, 0, 624, 46, view, 20);
         caption.alignment = TextAlignmentOptions.Center;
         button.onClick.AddListener((Action)(() => Act(academy)));
         return button;
@@ -152,8 +158,11 @@ public sealed class RosterPanel : MonoBehaviour
         _canvas!.SetActive(visible);
         if (!visible) return;
         var t = Current!._tournament!;
-        RefreshRow(t, GlobalValues.DataTeam, "Основа", _mainStatus, _mainCaption, _mainButton);
-        RefreshRow(t, GlobalValues.DataTeam?.GetAcademyTeam(), "Академия", _academyStatus, _academyCaption, _academyButton);
+        _header.text = UiText.T("ЗАЯВКИ СОСТАВОВ · DUAL ROSTER", "ROSTER ENTRIES · DUAL ROSTER");
+        var main = GlobalValues.DataTeam; var academy = main?.GetAcademyTeam();
+        RefreshRow(t, main, UiText.Main, _mainStatus, _mainCaption, _mainButton);
+        RefreshRow(t, academy, UiText.Academy, _academyStatus, _academyCaption, _academyButton);
+        _warning.text = SiblingWarning(t, main, academy);
     }
 
     private static void RefreshRow(DataTournament t, DataTeam? team, string name,
@@ -161,9 +170,18 @@ public sealed class RosterPanel : MonoBehaviour
     {
         var registered = Rules.Registered(t, team);
         var reason = Rules.CannotEnter(t, team);
-        status.text = $"{name}: {(registered ? "заявка подана" : reason ?? "может участвовать")}";
-        caption.text = registered ? $"Отменить заявку: {name}" : $"Заявить: {name}";
+        status.text = $"{name}: {(registered ? UiText.T("заявка подана", "registered") : reason ?? UiText.T("может участвовать", "eligible"))}";
+        caption.text = registered ? UiText.T($"Отменить заявку: {name}", $"Withdraw: {name}") : UiText.T($"Заявить: {name}", $"Register: {name}");
         button.interactable = registered || reason == null;
+    }
+
+    internal static string SiblingWarning(DataTournament t, DataTeam? main, DataTeam? academy)
+    {
+        if (Rules.Registered(t, main) && Rules.CannotEnter(t, academy) == null)
+            return UiText.T("Заявлена только основа. Академия тоже может участвовать.", "Only the main team is registered. The academy is also eligible.");
+        if (Rules.Registered(t, academy) && Rules.CannotEnter(t, main) == null)
+            return UiText.T("Заявлена только академия. Основа тоже может участвовать.", "Only the academy is registered. The main team is also eligible.");
+        return "";
     }
 
     private void Act(bool forAcademy)

@@ -1,4 +1,4 @@
-Dual Roster 0.3.1 — source build
+Dual Roster 0.4.0 — source build
 
 Русский: установите совместимый Workshop-пакет и .NET SDK 10.
 Запустите Build.ps1 -GamePath '<папка игры>'. Результат находится в build/.
@@ -24,7 +24,14 @@ payload/ holds one-time loader and compatibility files installed into the game.
 runtime/DualRoster.dll is gameplay code, loaded from Workshop into a verified per-hash cache.
 runtime/workshop-loader.json declares loader API, compatibility ID, item ID, version and SHA256.
 When making a gameplay release, rebuild the DLL and update its SHA256 in that manifest.
-Regenerate payload-manifest.json if one-time installation files change.
+Regenerate payload-manifest.json if compatibility or launcher files change.
+The prelauncher requires BootstrapApi=1 and the exact GameHash in workshop-loader.json.
+payload/DualRoster/compatibility.json records Schema=1, GameHash, GameBuild and Version.
+launcher/Launch.ps1 runs before the native game through the one-time Steam launch option.
+Update.Core.ps1 validates a fixed file allowlist and backs up changed components and Save.
+Test the launcher with Windows PowerShell 5.1, not only PowerShell 7. Save Russian .ps1
+files as UTF-8 with BOM for Windows PowerShell. Test update rollback/recovery with:
+powershell -NoProfile -ExecutionPolicy Bypass -File tests/UpdaterChecks.ps1 -WorkRoot <isolated temporary folder>
 The installer files in this source archive require the full Workshop package to run.
 
 Modified Il2CppInterop.Runtime (LGPL-3.0-only):

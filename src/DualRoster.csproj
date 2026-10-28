@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>DualRoster</AssemblyName>
-    <Version>0.3.1</Version>
+    <Version>0.4.0</Version>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <DefineConstants Condition="'$(TestBuild)' == 'true'">$(DefineConstants);DUALROSTER_TESTING</DefineConstants>
@@ -11,6 +11,7 @@
     <InteropRoot Condition="'$(InteropRoot)' == ''">../../../work/analysis/interop</InteropRoot>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="../shared/*.cs" Link="Shared/%(Filename)%(Extension)" />
     <Compile Remove="Plugin.cs" />
     <Compile Remove="RuntimeChecks.cs;FinanceChecks.cs" Condition="'$(TestBuild)' != 'true'" />
     <Reference Include="$(BepInExRoot)/core/BepInEx.Core.dll" Private="false" />
@@ -24,6 +25,8 @@
     <Reference Include="$(InteropRoot)/UnityEngine.UI.dll" Private="false" />
     <Reference Include="$(InteropRoot)/UnityEngine.UIModule.dll" Private="false" />
     <Reference Include="$(InteropRoot)/Unity.TextMeshPro.dll" Private="false" />
+    <Reference Include="$(InteropRoot)/Unity.Localization.dll" Private="false" />
+    <Reference Include="$(InteropRoot)/UnityEngine.ScreenCaptureModule.dll" Private="false" Condition="'$(TestBuild)' == 'true'" />
   </ItemGroup>
 </Project>
 

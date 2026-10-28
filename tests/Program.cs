@@ -1,6 +1,7 @@
 using DualRoster.Workshop;
 using System.Security.Cryptography;
 using System.Text.Json;
+using DualRoster.Shared;
 
 var root = Path.Combine(Path.GetTempPath(), "DualRosterChecks-" + Guid.NewGuid().ToString("N"));
 Directory.CreateDirectory(Path.Combine(root, "runtime"));
@@ -45,4 +46,17 @@ File.WriteAllText(Path.Combine(root, "runtime", "workshop-loader.json"), "{");
 Reject(() => WorkshopPackage.Read(root), "Truncated manifest rejected");
 File.WriteAllText(Path.Combine(root, "runtime", "workshop-loader.json"), new string(' ', 20000));
 Reject(() => WorkshopPackage.Read(root), "Oversized manifest rejected");
-Console.WriteLine($"{count} Workshop checks passed. Temporary fixtures: {root}");
+foreach (var phase in Enum.GetValues<LoaderPhase>())
+{
+    Check(CareerGatePolicy.CanEnter(phase, false) == (phase == LoaderPhase.Ready), "Career waits in state " + phase);
+    Check(CareerGatePolicy.CanEnter(phase, true), "Explicit unmodded confirmation in state " + phase);
+}
+UiText.LanguageProvider = () => "ru-RU";
+Check(UiText.Main == "Основа" && UiText.Decline == "Отказаться" && UiText.GateWarning.Contains("академии"), "Russian actions and risk explanation");
+UiText.LanguageProvider = () => "en-GB";
+Check(UiText.Main == "Main team" && UiText.Decline == "Decline" && UiText.GateWarning.Contains("academy"), "English actions and risk explanation");
+Check(UiText.Register(true) != UiText.Register(false), "Translated actions identify the intended roster");
+UiText.LanguageProvider = () => "fr-FR";
+Check(!UiText.IsRussian && UiText.GateTitle == "The mod is not ready", "Unsupported game language falls back to English");
+UiText.LanguageProvider = null;
+Console.WriteLine($"{count} package, career gate and localization checks passed. Temporary fixtures: {root}");
