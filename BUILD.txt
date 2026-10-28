@@ -1,4 +1,4 @@
-﻿Dual Roster 0.4.1 — source build
+﻿Dual Roster 0.4.2 — source build
 
 Русский: установите совместимый Workshop-пакет и .NET SDK 10.
 Запустите Build.ps1 -GamePath '<папка игры>'. Результат находится в build/.

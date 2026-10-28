@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>DualRoster.Workshop</AssemblyName>
-    <Version>0.4.1</Version>
+    <Version>0.4.2</Version>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <DefineConstants Condition="'$(TestBuild)' == 'true'">$(DefineConstants);DUALROSTER_TESTING</DefineConstants>

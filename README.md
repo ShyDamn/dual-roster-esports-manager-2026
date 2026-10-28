@@ -4,7 +4,7 @@
 
 ## Русский
 
-**0.4.1 beta · Windows x64 · Steam build 26012398.** Основа и академия вашего клуба могут участвовать в одном турнире, если каждый состав проходит по условиям игры.
+**0.4.2 beta · Windows x64 · Steam build 26012398.** Основа и академия вашего клуба могут участвовать в одном турнире, если каждый состав проходит по условиям игры.
 
 ### Возможности
 
@@ -21,11 +21,11 @@
 1. Подпишитесь в Workshop и дождитесь загрузки. Закройте игру.
 2. Запустите `Install.cmd` из `SteamLibrary/steamapps/workshop/content/2749950/3819071177`. При отказе Windows в записи запустите его от имени администратора.
 3. В папке игры откройте `DualRoster/Steam-LaunchOptions.txt`. Скопируйте строку в Steam → свойства игры → параметры запуска. Это однократная настройка обновлятора. Если у вас уже есть собственный сторонний запускатель, сначала согласуйте их совместную настройку.
-4. Запускайте игру через Steam. Перед открытием карьеры дождитесь статуса `Dual Roster: 0.4.1 включён`.
+4. Запускайте игру через Steam. Перед открытием карьеры дождитесь статуса `Dual Roster: 0.4.2 включён`.
 
 **При переходе с 0.3.x установщик и настройка параметров запуска нужны один раз.** Обычная подписка сама по себе не устанавливает загрузчик с кодом.
 
-Обновлятор запускается перед игрой, ждёт загрузку Workshop и проверяет совместимость и контрольные суммы. Когда мы уже выпустили пакет для новой сборки игры, он заменит нужные компоненты автоматически. Если совместимого пакета ещё нет, обновлятор остановит запуск и объяснит причину. Поддержку нового патча игры всё равно нужно проверить и выпустить; автоматическая установка не заменяет эту работу.
+Обновлятор запускается перед игрой, ждёт загрузку Workshop и проверяет совместимость и контрольные суммы. Когда мы уже выпустили пакет для новой сборки игры, он заменит нужные компоненты автоматически. Если совместимого пакета ещё нет, обновлятор остановит запуск и объяснит причину. Старый пакет Workshop не откатывает уже установленные более новые совместимые компоненты. Поддержку нового патча игры всё равно нужно проверить и выпустить; автоматическая установка не заменяет эту работу.
 
 При изменении компонентов сохраняются их предыдущие версии и копия `Save` в `DualRosterBackups/update-*` внутри папки игры. При ошибке записи выполняется откат, а после прерванного обновления восстановление проверяется на следующем запуске. Сохранения обновлятор не исправляет и не пересчитывает.
 
@@ -57,7 +57,7 @@ DLL появляются в `build/`; сборка не устанавливае
 
 ## English
 
-**0.4.1 beta · Windows x64 · Steam build 26012398.** Register your club's main team and academy in the same event when both meet the game's requirements.
+**0.4.2 beta · Windows x64 · Steam build 26012398.** Register your club's main team and academy in the same event when both meet the game's requirements.
 
 - Independent tournament registration and withdrawal, exact rank/player requirements, the conflicting event's name, and a warning when an eligible sibling roster has not entered.
 - Three invitation actions: register main, register academy, decline. Decline remains available when neither roster is eligible, closes both invitations and survives reload. Existing entries are preserved.
@@ -72,7 +72,7 @@ Subscribe and let Steam finish downloading. Close the game and run `Install.cmd`
 
 Copy the line from the installed game's `DualRoster/Steam-LaunchOptions.txt` into that game's Steam launch options. **Upgrading from 0.3.x requires this installer and launch-option setup once.** Do not overwrite an unrelated third-party launcher configuration without checking how they should be combined. Launch through Steam normally and wait for the main-menu `active` status.
 
-The prelaunch updater waits for subscribed content, verifies the exact game hash and package checksums, and updates compatibility components before the game loads them. A new game build still needs a tested release from us. If no compatible release is available, it stops the launch with an explanation. Subscribing alone cannot perform the initial code-loader installation.
+The prelaunch updater waits for subscribed content, verifies the exact game hash and package checksums, and updates compatibility components before the game loads them. A new game build still needs a tested release from us. If no compatible release is available, it stops the launch with an explanation. An older Workshop delivery cannot downgrade newer compatible installed components. Subscribing alone cannot perform the initial code-loader installation.
 
 Changed components and the career directory are backed up under the game's `DualRosterBackups/update-*`. Failed writes roll back; interrupted updates are checked at the next launch. The updater does not edit career contents or award historical money.
 

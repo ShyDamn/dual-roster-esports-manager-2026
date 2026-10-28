@@ -91,6 +91,16 @@ function Invoke-DrUpdate([string]$Package,[string]$GameRoot,[string]$SaveRoot,[s
     if(@(Get-Process EsportsManager -ErrorAction SilentlyContinue | Where-Object { !$_.Path -or $_.Path -eq $exe }).Count) { throw 'Close the game before updating its components.' }
     Repair-DrInterruptedUpdate $GameRoot
     $packageInfo=Read-DrPackage $Package $GameRoot
+    $installedPath=Get-DrInside $GameRoot 'DualRoster\compatibility.json'
+    if(Test-Path -LiteralPath $installedPath) {
+        $installed=Get-Content -LiteralPath $installedPath -Raw | ConvertFrom-Json
+        $installedVersion=[version]'0.0'
+        if($installed.Schema -eq 1 -and $installed.GameHash -eq $packageInfo.Manifest.GameHash -and
+           [version]::TryParse([string]$installed.Version,[ref]$installedVersion) -and
+           $installedVersion -gt [version]$packageInfo.Manifest.Version) {
+            return [pscustomobject]@{Changed=0;Backup=$null;Version=$installed.Version;SkippedOlderPackage=$true}
+        }
+    }
     $changed=@($packageInfo.Entries | Where-Object {
         $target=Get-DrInside $GameRoot $_.Path
         !(Test-Path -LiteralPath $target) -or (Get-DrHash $target) -ne $_.Hash

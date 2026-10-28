@@ -33,7 +33,7 @@ $russian=[Globalization.CultureInfo]::CurrentUICulture.Name -like 'ru*'
 $languageFile=Get-DrInside $GameRoot 'DualRoster\language.txt'
 if(Test-Path -LiteralPath $languageFile) { $russian=(Get-Content -LiteralPath $languageFile -Raw).Trim() -eq 'ru' }
 function Say([string]$Ru,[string]$En) { if($russian) { return $Ru } else { return $En } }
-$form=$null; $label=$null; $progress=$null
+$form=$null; $label=$null; $progressBar=$null
 if(!$NoUi) {
     Add-Type -AssemblyName System.Windows.Forms
     Add-Type -AssemblyName System.Drawing
@@ -43,8 +43,8 @@ if(!$NoUi) {
     $label=New-Object Windows.Forms.Label; $label.Left=18; $label.Top=16; $label.Width=550; $label.Height=50
     $label.Text=(Say 'Проверка обновления Workshop…' 'Checking the Workshop update…')
     $form.Controls.Add($label)
-    $progress=New-Object Windows.Forms.ProgressBar; $progress.Left=18; $progress.Top=75; $progress.Width=550; $progress.Style='Marquee'
-    $form.Controls.Add($progress); $form.Show(); [Windows.Forms.Application]::DoEvents()
+    $progressBar=New-Object Windows.Forms.ProgressBar; $progressBar.Left=18; $progressBar.Top=75; $progressBar.Width=550; $progressBar.Style='Marquee'
+    $form.Controls.Add($progressBar); $form.Show(); [Windows.Forms.Application]::DoEvents()
 }
 $steamInitialized=$false
 $logPath=Get-DrInside $GameRoot 'DualRoster\launcher.log'
@@ -101,7 +101,7 @@ try {
         $saveRoot=Join-Path $env:USERPROFILE 'AppData\LocalLow\NeuronaGames\EsportsManager\Save'
         $result=Invoke-DrUpdate -Package $package -GameRoot $GameRoot -SaveRoot $saveRoot -Progress {
             param($done,$total)
-            if($progress) { $progress.Style='Continuous'; $progress.Value=[int](100*$done/$total) }
+            if($progressBar) { $progressBar.Style='Continuous'; $progressBar.Value=[int](100*$done/$total) }
             Pump
         }
         Log ("Ready: version="+$result.Version+' changed='+$result.Changed+' backup='+$result.Backup)

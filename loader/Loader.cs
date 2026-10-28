@@ -8,7 +8,7 @@ using DualRoster.Shared;
 
 namespace DualRoster.Workshop;
 
-[BepInPlugin("local.dualroster.workshop", "Dual Roster Workshop Loader", "0.4.1")]
+[BepInPlugin("local.dualroster.workshop", "Dual Roster Workshop Loader", "0.4.2")]
 public sealed class Loader : BasePlugin
 {
     internal const string GameplayId = "local.dualroster.em2026";

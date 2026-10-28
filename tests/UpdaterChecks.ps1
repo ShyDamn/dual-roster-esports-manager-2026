@@ -24,7 +24,7 @@ function Fixture([string]$Name) {
     [IO.File]::WriteAllText($target,'old loader')
     [IO.File]::WriteAllText((Join-Path $package ('payload\'+$relative)),'new loader')
     [IO.File]::WriteAllText((Join-Path $package 'runtime\DualRoster.dll'),'gameplay')
-    $manifest=[pscustomobject]@{Schema=1;LoaderApi=1;BootstrapApi=1;WorkshopId=[uint64]3819071177;Version='0.4.1';GameHash=(Get-DrHash (Join-Path $game 'GameAssembly.dll'));Sha256=(Get-DrHash (Join-Path $package 'runtime\DualRoster.dll'))}
+    $manifest=[pscustomobject]@{Schema=1;LoaderApi=1;BootstrapApi=1;WorkshopId=[uint64]3819071177;Version='0.4.2';GameHash=(Get-DrHash (Join-Path $game 'GameAssembly.dll'));Sha256=(Get-DrHash (Join-Path $package 'runtime\DualRoster.dll'))}
     $manifest | ConvertTo-Json | Set-Content (Join-Path $package 'runtime\workshop-loader.json') -Encoding UTF8
     @([pscustomobject]@{Path=$relative;Hash=(Get-DrHash (Join-Path $package ('payload\'+$relative)))}) | ConvertTo-Json | Set-Content (Join-Path $package 'payload-manifest.json') -Encoding UTF8
     return [pscustomobject]@{Game=$game;Package=$package;Save=$save;Target=$target;Relative=$relative}
@@ -36,6 +36,14 @@ Check ([IO.File]::ReadAllText((Join-Path $result.Backup ('original\'+$fixture.Re
 Check ([IO.File]::ReadAllText((Join-Path $result.Backup 'Save\career.mpack')) -eq 'career unchanged') 'Career snapshot created before replacement'
 Check ([IO.File]::ReadAllText((Join-Path $fixture.Save 'career.mpack')) -eq 'career unchanged') 'Original career unchanged'
 Check ((Invoke-DrUpdate $fixture.Package $fixture.Game $fixture.Save).Changed -eq 0) 'Already installed package does not repeat backup or writes'
+
+$fixture=Fixture 'older-workshop'
+$compatibility=Join-Path $fixture.Game 'DualRoster\compatibility.json'
+New-Item -ItemType Directory -Path (Split-Path $compatibility) -Force | Out-Null
+@{Schema=1;GameHash=(Get-DrHash (Join-Path $fixture.Game 'GameAssembly.dll'));Version='99.0.0'} | ConvertTo-Json | Set-Content $compatibility -Encoding UTF8
+$result=Invoke-DrUpdate $fixture.Package $fixture.Game $fixture.Save
+Check ($result.SkippedOlderPackage -and $result.Changed -eq 0) 'Older Workshop delivery never downgrades newer compatible components'
+Check ([IO.File]::ReadAllText($fixture.Target) -eq 'old loader' -and !(Test-Path (Join-Path $fixture.Game 'DualRosterBackups'))) 'Skipping an older package leaves files and career untouched'
 
 $fixture=Fixture 'wrong-game'
 [IO.File]::WriteAllText((Join-Path $fixture.Game 'GameAssembly.dll'),'another build')
